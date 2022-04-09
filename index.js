@@ -54,6 +54,12 @@ let createLineChart = () => {
 
 let chartInstance = createLineChart()
 
+$("#inputVal").on('keyup', function (e) {
+  if (e.key === 'Enter' || e.keyCode === 13) {
+    $("#mesmerizeM").trigger( "click" );
+  }
+});
+
 $("#mesmerizeM").on("click", e => {
   givenVal = parseInt($("#inputVal").val())
 
