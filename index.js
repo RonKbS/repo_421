@@ -1,7 +1,8 @@
 
 
-let givenVal = 7
-let vals421, timeOutIds = []
+let givenVal = 7;
+let vals421, timeOutIds = [];
+let oldTime = 5;
 
 let fillVals421 = val_ => {
   vals421 = []
@@ -58,31 +59,40 @@ $("#mesmerizeM").on("click", e => {
 
   if (typeof(givenVal) === "number" && givenVal > 0) {
 
+    let oldVals421 = _.cloneDeep(vals421);
+    fillVals421();
 
-  let oldVals = _.cloneDeep(vals421);
-  fillVals421();
+    let timeTaken = 5;
+    if (vals421.length > 30) {
+      timeTaken = parseInt(vals421.length/50)
+    }
+    chartInstance.options.plugins.title.text = `${givenVal} - ${vals421.length} numbers to get back to 1`
+    
+    timeOutIds.forEach(iD => clearTimeout(iD))
+    timeOutIds = []
 
-  let timeTaken = 5;
-  if (vals421.length > 30) {
-    timeTaken = parseInt(vals421.length/50)
-  }
-  chartInstance.options.plugins.title.text = `${givenVal} - ${vals421.length} numbers to get back to 1`
-  
-  timeOutIds.forEach(iD => clearTimeout(iD))
-  timeOutIds = []
-
-  vals421.forEach((val_, index) => {
-    timeOutIds.push(
-      setTimeout(
-        () => {
-          if (index < oldVals.length) chartInstance.data.datasets[0].data.shift();
-          chartInstance.data.datasets[0].data.push(val_);
-          chartInstance.update()
-        }, index * timeTaken * 100
+    oldVals421.forEach((val_, index) => {
+      timeOutIds.push(
+        setTimeout(
+          () => {
+            chartInstance.data.datasets[0].data.shift();
+            chartInstance.update()
+          }, index * oldTime * 100
+        )
       )
-    )
-  }
-  )
+    })
+
+    vals421.forEach((val_, index) => {
+      timeOutIds.push(
+        setTimeout(
+          () => {
+            chartInstance.data.datasets[0].data.push(val_);
+            chartInstance.update()
+          }, index * timeTaken * 100
+        )
+      )
+    })
+    oldTime = timeTaken
   } else {
     alert(`${givenVal} is not a positive number`)
   }
