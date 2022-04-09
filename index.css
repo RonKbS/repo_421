@@ -1,0 +1,7 @@
+
+.card {
+    top: 5rem;
+    left: 20rem;
+    width: 50%;
+    box-shadow: 0 0 10px 0 rgba(100, 100, 100, 0.26);
+}
