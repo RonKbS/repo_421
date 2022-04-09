@@ -1,6 +1,6 @@
 
 
-let givenVal = 7
+let givenVal = 500
 let vals421 = []
 
 while (vals421[vals421.length - 1] !== 1) {
@@ -22,7 +22,7 @@ let createLineChart = () => {
       labels: vals421,
       datasets: [{
         label: '55',
-        data: vals421,
+        data: vals421.slice(0, 1),
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1
       }]
@@ -38,4 +38,12 @@ let createLineChart = () => {
   return myChart
 }
 
-createLineChart()
+let chartInstance = createLineChart()
+
+
+vals421.slice(1, vals421.length).forEach((val_, index) => setTimeout(
+    () => {
+      chartInstance.data.datasets[0].data.push(val_); chartInstance.update()
+    }, index * 500
+  )
+)
