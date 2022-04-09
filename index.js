@@ -62,6 +62,7 @@ $("#inputVal").on('keyup', function (e) {
 
 $("#mesmerizeM").on("click", e => {
   givenVal = parseInt($("#inputVal").val())
+  $("#inputVal").prop('disabled', true);
 
   if (typeof(givenVal) === "number" && givenVal > 0) {
 
@@ -94,6 +95,9 @@ $("#mesmerizeM").on("click", e => {
           () => {
             chartInstance.data.datasets[0].data.push(val_);
             chartInstance.update()
+            if (index === vals421.length - 1) {
+              $("#inputVal").prop('disabled', false);
+            }
           }, index * timeTaken * 100
         )
       )
