@@ -59,6 +59,7 @@ $("#mesmerizeM").on("click", e => {
   if (typeof(givenVal) === "number" && givenVal > 0) {
 
 
+  let oldVals = _.cloneDeep(vals421);
   fillVals421();
 
   let timeTaken = 5;
@@ -67,14 +68,20 @@ $("#mesmerizeM").on("click", e => {
   }
   chartInstance.options.plugins.title.text = `${givenVal} - ${vals421.length} numbers to get back to 1`
   
-  
-  vals421.slice(1, vals421.length).forEach((val_, index) => setTimeout(
-      () => {
-        chartInstance.data.datasets[0].data.shift();
-        chartInstance.data.datasets[0].data.push(val_);
-        chartInstance.update()
-      }, index * timeTaken * 100
+  timeOutIds.forEach(iD => clearTimeout(iD))
+  timeOutIds = []
+
+  vals421.forEach((val_, index) => {
+    timeOutIds.push(
+      setTimeout(
+        () => {
+          if (index < oldVals.length) chartInstance.data.datasets[0].data.shift();
+          chartInstance.data.datasets[0].data.push(val_);
+          chartInstance.update()
+        }, index * timeTaken * 100
+      )
     )
+  }
   )
   } else {
     alert(`${givenVal} is not a positive number`)
